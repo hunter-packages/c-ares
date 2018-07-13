@@ -33,6 +33,7 @@ option (CARES_SHARED     "Build as a shared library"                            
 option (CARES_INSTALL    "Create installation targets (chain builders may want to disable this)" ON)
 option (CARES_STATIC_PIC "Build the static library as PIC (position independent)"                OFF)
 option (CARES_BUILD_TESTS "Build and run tests"                                                  OFF)
+option (CARES_BUILD_TOOLS "Build tools"                                                          ON)
 
 # allow linking against the static runtime library in msvc
 if (MSVC)
@@ -669,29 +670,30 @@ endif ()
 set (CARES_FOUND 1 CACHE INTERNAL "CARES LIBRARY FOUND")
 set (CARES_LIBRARIES ${PROJECT_NAME}::cares CACHE INTERNAL "CARES LIBRARIES")
 
-
-# Build ahost
-add_executable (ahost ahost.c ${SAMPLESOURCES})
-target_compile_definitions (ahost PRIVATE HAVE_CONFIG_H=1)
-target_link_libraries (ahost PRIVATE ${PROJECT_NAME})
-if (CARES_INSTALL)
-  install (TARGETS ahost ${TARGETS_INST_DEST})
-endif ()
-
-
-# Build adig
-add_executable (adig adig.c ${SAMPLESOURCES})
-target_compile_definitions (adig PRIVATE HAVE_CONFIG_H=1)
-target_link_libraries (adig PRIVATE ${PROJECT_NAME})
-if (CARES_INSTALL)
-  install (TARGETS adig ${TARGETS_INST_DEST})
-endif ()
+if(CARES_BUILD_TOOLS)
+  # Build ahost
+  add_executable (ahost ahost.c ${SAMPLESOURCES})
+  target_compile_definitions (ahost PRIVATE HAVE_CONFIG_H=1)
+  target_link_libraries (ahost PRIVATE ${PROJECT_NAME})
+  if (CARES_INSTALL)
+    install (TARGETS ahost ${TARGETS_INST_DEST})
+  endif ()
 
 
-# Build acountry
-add_executable (acountry acountry.c ${SAMPLESOURCES})
-target_compile_definitions (acountry PRIVATE HAVE_CONFIG_H=1)
-target_link_libraries (acountry PRIVATE ${PROJECT_NAME})
-if (CARES_INSTALL)
-  install (TARGETS acountry ${TARGETS_INST_DEST})
-endif ()
+  # Build adig
+  add_executable (adig adig.c ${SAMPLESOURCES})
+  target_compile_definitions (adig PRIVATE HAVE_CONFIG_H=1)
+  target_link_libraries (adig PRIVATE ${PROJECT_NAME})
+  if (CARES_INSTALL)
+    install (TARGETS adig ${TARGETS_INST_DEST})
+  endif ()
+
+
+  # Build acountry
+  add_executable (acountry acountry.c ${SAMPLESOURCES})
+  target_compile_definitions (acountry PRIVATE HAVE_CONFIG_H=1)
+  target_link_libraries (acountry PRIVATE ${PROJECT_NAME})
+  if (CARES_INSTALL)
+    install (TARGETS acountry ${TARGETS_INST_DEST})
+  endif ()
+endif()
