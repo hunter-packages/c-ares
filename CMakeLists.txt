@@ -554,7 +554,7 @@ include(${PROJECT_BINARY_DIR}/Makefile.inc.cmake)
 
 
 # Build the dynamic/shared library
-if (CARES_SHARED)
+if (BUILD_SHARED_LIBS)
   add_library (${PROJECT_NAME} SHARED ${CSOURCES})
 
   # Convert CARES_LIB_VERSIONINFO libtool version format into VERSION and SOVERSION
@@ -594,7 +594,7 @@ if (CARES_SHARED)
 endif ()
 
 # Build the static library
-if (CARES_STATIC)
+if (NOT BUILD_SHARED_LIBS)
   set (LIBNAME ${PROJECT_NAME}${STATIC_SUFFIX})
 
   add_library (${LIBNAME} STATIC ${CSOURCES})
@@ -655,7 +655,7 @@ if (CARES_INSTALL)
   install (FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake" DESTINATION ${CMAKECONFIG_INSTALL_DIR})
 
   # pkgconfig support
-  if (NOT CARES_SHARED)
+  if (NOT BUILD_SHARED_LIBS)
     set (CPPFLAG_CARES_STATICLIB "-DCARES_STATICLIB")
     foreach (LIB ${CARES_DEPENDENT_LIBS})
       set (CARES_PRIVATE_LIBS "${CARES_PRIVATE_LIBS} -l${LIB}")
